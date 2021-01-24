@@ -419,16 +419,20 @@ static unsigned int readDestByte(int offset, unsigned char *out)
   return 0;
 }
 
+
 // consume and return a byte from the source stream into the argument 'out'.
 // returns 0 on success, or -1 on error.
 static unsigned int readSourceByte(struct TINF_DATA *data, unsigned char *out)
 {
   //if( !tarGzStream.gz->available() ) return -1;
   if (tarGzStream.gz->readBytes( out, 1 ) != 1) {
-    log_e("readSourceByte read error");
-    return -1;
+    log_e("readSourceByte read error, available is %d.  attempting one-time retry", tarGzStream.gz->available());
+    if (tarGzStream.gz->readBytes( out, 1 ) != 1) {
+    log_e("readSourceByte read error, available is %d.  failed at retry", tarGzStream.gz->available());
+      return -1;
+    }
   } else {
-    log_v("read 1 byte: 0x%02x", out[0] );
+    //log_v("read 1 byte: 0x%02x", out[0] );
   }
   return 0;
 }
