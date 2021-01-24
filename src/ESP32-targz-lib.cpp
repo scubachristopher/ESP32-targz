@@ -426,7 +426,7 @@ static unsigned int readSourceByte(struct TINF_DATA *data, unsigned char *out)
 {
   //if( !tarGzStream.gz->available() ) return -1;
   if (tarGzStream.gz->readBytes( out, 1 ) != 1) {
-    log_e("readSourceByte read error, available is %d.  attempting one-time retry", tarGzStream.gz->available());
+    log_i("readSourceByte read error, available is %d.  attempting one-time retry", tarGzStream.gz->available());
     if (tarGzStream.gz->readBytes( out, 1 ) != 1) {
     log_e("readSourceByte read error, available is %d.  failed at retry", tarGzStream.gz->available());
       return -1;
